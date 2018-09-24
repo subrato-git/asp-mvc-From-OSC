@@ -85,5 +85,19 @@ namespace ASPNET_MVC_Application.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Delete(int id)
+        {
+            String conString = "Data Source=OSC_HR_Mahfuzur;Initial Catalog=Student;Integrated Security=True";
+            SqlConnection con = new SqlConnection(conString);
+            String query = "DELETE from StudentInfo WHERE Id = @id";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@id",id);
+
+            con.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
