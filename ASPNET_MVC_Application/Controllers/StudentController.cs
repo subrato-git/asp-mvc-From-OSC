@@ -5,46 +5,41 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.SqlClient;
 using ASPNET_MVC_Application.Models;
+using ASPNET_MVC_Application.Repository;
 
 namespace ASPNET_MVC_Application.Controllers
 {
     public class StudentController : Controller
     {
-        IList<Student> studentList = new List<Student>() {
-                    new Student(){ StudentId=1, StudentName="John", StudentAge = 18 },
-                    new Student(){ StudentId=2, StudentName="Steve", StudentAge = 21 },
-                    new Student(){ StudentId=3, StudentName="Bill", StudentAge = 25 },
-                    new Student(){ StudentId=4, StudentName="Ram", StudentAge = 20 },
-                    new Student(){ StudentId=5, StudentName="Ron", StudentAge = 31 },
-                    new Student(){ StudentId=6, StudentName="Chris", StudentAge = 17 },
-                    new Student(){ StudentId=7, StudentName="Rob", StudentAge = 19 }
-                };
+        StudentHelper repo = new StudentHelper();
         // GET: Student
-        public ActionResult Index()
+        public ActionResult Index ()
         {
-             String conString = "Data Source=OSC_HR_Mahfuzur;Initial Catalog=Student;Integrated Security=True";
-             SqlConnection con = new SqlConnection(conString); 
-             String query = "Select * from StudentInfo";
-             SqlCommand cmd = new SqlCommand(query,con);
+             //String conString = "Data Source=OSC_HR_Mahfuzur;Initial Catalog=Student;Integrated Security=True";
+             //SqlConnection con = new SqlConnection(conString); 
+             //String query = "Select * from StudentInfo";
+             //SqlCommand cmd = new SqlCommand(query,con);
 
-             var model = new List<Student>();       
+             //var modele = new List<Student>();       
 
-             con.Open();
-             SqlDataReader rdr = cmd.ExecuteReader();
-             while (rdr.Read())
-             {
-                var student = new Student();
-                student.StudentId = (int)rdr["Id"];
-                student.StudentName = rdr["Name"].ToString();
-                student.StudentAge =  (int)rdr["Age"];
+             //con.Open();
+             //SqlDataReader rdr = cmd.ExecuteReader();
+             //while (rdr.Read())
+             //{
+             //   var student = new Student();
+             //   student.Id = (int)rdr["Id"];
+             //   student.Name = rdr["Name"].ToString();
+             //   student.Age =  (int)rdr["Age"];
 
-                model.Add(student);
-             }
+             //   modele.Add(student);
+             //}
+
+            var model = repo.GetAllStudents();
 
              return View(model);  
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit (int id)
         {
             String conString = "Data Source=OSC_HR_Mahfuzur;Initial Catalog=Student;Integrated Security=True";
             SqlConnection con = new SqlConnection(conString);
@@ -54,13 +49,13 @@ namespace ASPNET_MVC_Application.Controllers
            
             con.Open();
             SqlDataReader rdr = cmd.ExecuteReader();
-            var student = new Student();
+            var student = new StudentInfo();
             while (rdr.Read())
             {
-                student.StudentId = (int)rdr["Id"];
-                student.StudentName = rdr["Name"].ToString();
-                student.StudentAge = (int)rdr["Age"];
-                if (student.StudentId == id)
+                student.Id = (int)rdr["Id"];
+                student.Name = rdr["Name"].ToString();
+                student.Age = (int)rdr["Age"];
+                if (student.Id == id)
                 {
                     break;
                 }
@@ -70,22 +65,22 @@ namespace ASPNET_MVC_Application.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Student std)
+        public ActionResult Edit (StudentInfo std)
         {
             String conString = "Data Source = OSC_HR_Mahfuzur; Initial Catalog = Student; Integrated Security = True";
             SqlConnection con = new SqlConnection(conString);
             String query = "UPDATE StudentInfo SET Name = @StudentName, Age = @StudentAge WHERE Id = @StudentId;";
             SqlCommand cmd = new SqlCommand(query,con);
-            cmd.Parameters.AddWithValue("@StudentName", std.StudentName);
-            cmd.Parameters.AddWithValue("@StudentAge", std.StudentAge);
-            cmd.Parameters.AddWithValue("@StudentId", std.StudentId);
+            cmd.Parameters.AddWithValue("@StudentName", std.Name);
+            cmd.Parameters.AddWithValue("@StudentAge", std.Age);
+            cmd.Parameters.AddWithValue("@StudentId", std.Id);
             con.Open();
             SqlDataReader rdr = cmd.ExecuteReader();
 
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete (int id)
         {
             String conString = "Data Source=OSC_HR_Mahfuzur;Initial Catalog=Student;Integrated Security=True";
             SqlConnection con = new SqlConnection(conString);
@@ -97,6 +92,31 @@ namespace ASPNET_MVC_Application.Controllers
             SqlDataReader rdr = cmd.ExecuteReader();
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Details (int id)
+        {
+            String conString = "Data Source=OSC_HR_Mahfuzur;Initial Catalog=Student;Integrated Security=True";
+            SqlConnection con = new SqlConnection(conString);
+            String query = "Select * from StudentInfo";
+            SqlCommand cmd = new SqlCommand(query, con);
+
+
+            con.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+            var student = new StudentInfo();
+            while (rdr.Read())
+            {
+                student.Id = (int)rdr["Id"];
+                student.Name = rdr["Name"].ToString();
+                student.Age = (int)rdr["Age"];
+                if (student.Id == id)
+                {
+                    break;
+                }
+            }
+
+            return View(student);
         }
 
     }
