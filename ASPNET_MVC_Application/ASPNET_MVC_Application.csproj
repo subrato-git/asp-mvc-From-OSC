@@ -326,6 +326,9 @@
     <Content Include="Views\Student\Delete.cshtml" />
     <Content Include="Views\Student\Details.cshtml" />
     <Content Include="Views\Student\Create.cshtml" />
+    <Content Include="Views\Student\RazorSyntax.cshtml" />
+    <Content Include="Views\Student\Search.cshtml" />
+    <Content Include="Views\Student\SearchResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

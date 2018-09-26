@@ -138,5 +138,33 @@ namespace ASPNET_MVC_Application.Controllers
             return View(repo.GetSingleStudentRecord(id));
         }
 
+        public ActionResult RazorSyntax ()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Search ()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Search(String stdName)
+        {
+            StudentInfo single = repo.SearchStudentRecord(stdName);
+            System.Diagnostics.Debug.WriteLine(single.Name);
+            TempData["st"] = single;
+            return RedirectToAction("SearchResult");
+        }
+
+        public ActionResult SearchResult()
+        {
+            StudentInfo s = new StudentInfo();
+            s = (StudentInfo)TempData["st"];
+            System.Diagnostics.Debug.WriteLine(s.Name);
+            return View(s);
+        }
+
     }
 }

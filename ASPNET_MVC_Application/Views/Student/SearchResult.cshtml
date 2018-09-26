@@ -1,0 +1,17 @@
+﻿@model ASPNET_MVC_Application.Models.StudentInfo
+@{
+    ViewBag.Title = "SearchResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SearchResult</h2>
+
+@using (Html.BeginForm())
+{
+    <div>
+        <p>Id: @Html.DisplayFor(model => model.Id)</p>
+        <p>Name: @Html.DisplayFor(model => model.Name)</p>
+        <p>Age: @Html.DisplayFor(model => model.Age)</p>
+        
+    </div>
+}

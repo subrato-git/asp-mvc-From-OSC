@@ -56,7 +56,24 @@ namespace ASPNET_MVC_Application.Repository
             try
             {
                 StudentInfo st = db.tStudent.SingleOrDefault(c => c.Id == id);
-                db.Database.Log = Console.WriteLine;
+                //db.Database.Log = Console.WriteLine;
+                return st;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public StudentInfo SearchStudentRecord(string name)
+        {
+            try
+            {
+                //name = "Subrato";
+                System.Diagnostics.Debug.WriteLine(name.GetType());
+                StudentInfo st = new StudentInfo();
+                st = db.tStudent.Where(c => c.Name == name.Trim()).FirstOrDefault();
+
+                //db.Database.Log = Console.WriteLine;
                 return st;
             }
             catch (Exception e)
